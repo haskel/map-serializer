@@ -5,7 +5,7 @@
     "keywords": [],
     "license": "MIT",
     "require": {
-        "symfony/yaml": "^4.2",
+        "symfony/yaml": "~4.0",
         "nette/php-generator": "^3.2"
     },
     "autoload": {
