@@ -1,0 +1,16 @@
+{
+    "name": "haskel/map-serializer",
+    "type": "library",
+    "description": "Object Serializer",
+    "keywords": [],
+    "license": "MIT",
+    "require": {
+        "symfony/yaml": "^4.2",
+        "nette/php-generator": "^3.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Haskel\\SchemaSerializer\\": "src/"
+        }
+    }
+}

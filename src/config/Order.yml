@@ -1,0 +1,22 @@
+default:
+  id: 'int'
+  name: 'string'
+  createdAt: 'datetime'
+#  address: 'simple'
+#  delivery:
+#    schema: 'full'
+#  manager:
+#    schema: 'simple'
+
+simple:
+  id: 'int'
+  name: 'string'
+  createdAt: 'datetime'
+
+test:
+  id: 'int'
+  name: 'string'
+  createdAt: 'datetime'
+  owner: 'string'
+  user: 'string'
+  externalId: 'string'
