@@ -1,0 +1,2 @@
+- handle doctrine proxy objects: Proxies\__CG__
+- alias of field. username -> name

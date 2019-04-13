@@ -5,6 +5,7 @@ use Haskel\SchemaSerializer\EntityExtractor\Extractor;
 use Haskel\SchemaSerializer\EntityExtractor\FieldExtractor;
 use Haskel\SchemaSerializer\Exception\SerializerException;
 use Haskel\SchemaSerializer\Formatter\Formatter;
+use Haskel\SchemaSerializer\Formatter\ObjectFormatter;
 use Haskel\SchemaSerializer\Formatter\ScalarFormatter;
 use Haskel\SchemaSerializer\Schema\SpecialField;
 
@@ -22,6 +23,8 @@ class Serializer
 
     private $ignoreUnknownFields = true;
 
+    private $extractorsDir = '';
+
     public function __construct()
     {
         $this->initDefault();
@@ -34,6 +37,9 @@ class Serializer
         foreach ($scalarTypes as $scalarType) {
             $this->addSchema('scalar', $scalarType, [SpecialField::FORMATTER => ScalarFormatter::class]);
         }
+
+        $this->addFormatter(new ObjectFormatter());
+        $this->addSchema('object', $this->defaultSchemaName, [SpecialField::FORMATTER => ObjectFormatter::class]);
     }
 
     /**
@@ -56,6 +62,11 @@ class Serializer
         $this->extractors[$className][$name] = $extractorClass;
     }
 
+    public function setExtractorsDir($extractorsDir)
+    {
+        $this->extractorsDir = $extractorsDir;
+    }
+
     public function setContext()
     {
 
@@ -68,7 +79,7 @@ class Serializer
      *
      * @return array|string|null
      */
-    public function serialize($entity, $schemaName = null, Context $context = null)
+    public function serialize($entity, $schemaName = 'default', Context $context = null)
     {
         if (is_iterable($entity)) {
             $result = [];
@@ -97,13 +108,17 @@ class Serializer
     private function getSchema($entity, $name = null)
     {
         $name = $name ?: $this->defaultSchemaName;
-        $type = is_object($entity) ? get_class($entity) : 'scalar';
 
-        if (!isset($this->schemas[$type][$name])) {
-            throw new SerializerException(sprintf("schema %s for '%s' is undefined", $name, $type));
+        if (is_object($entity)) {
+            $type = get_class($entity);
+            $schema = $this->schemas[$type][$name] ?? $this->schemas['object'][$name] ?? null;
+            if (!$schema) {
+                throw new SerializerException(sprintf("schema '%s' for '%s' is undefined", $name, $type));
+            }
+            return $schema;
         }
 
-        return $this->schemas[$type][$name];
+        return $this->schemas['scalar'][$name];
     }
 
     /**
@@ -116,10 +131,20 @@ class Serializer
         $className = get_class($entity);
         if (isset($this->extractors[$className][$schemaName])) {
             $extractorClass = $this->extractors[$className][$schemaName];
+            $this->loadExtractor($extractorClass);
             return new $extractorClass($entity);
         }
 
         return new FieldExtractor($entity);
+    }
+
+    private function loadExtractor($extractorClass)
+    {
+        $name = substr_replace($extractorClass, "", 0, strrpos($extractorClass, "\\") + 1);
+        $file = $this->extractorsDir . "/" . $name . ".php";
+        if (file_exists($file)) {
+            @include_once $file;
+        }
     }
 
     /**

@@ -18,6 +18,13 @@ class ExtractorGenerator
     const USE_ARRAY_ACCESS    = 3;
     const USE_REFLECTION      = 4;
 
+    private $namespace = '';
+
+    public function __construct($namespace = '')
+    {
+        $this->namespace = $namespace;
+    }
+
     /**
      * @param $entityClass
      * @param $schemaName
@@ -44,8 +51,7 @@ class ExtractorGenerator
         $body = "return [\n    {$methodLines}\n];";
 
 
-        $ns = 'Haskel\\SchemaSerializer\\EntityExtractor\\Generated';
-        $namespace = new PhpNamespace($ns);
+        $namespace = new PhpNamespace($this->namespace);
         $namespace->addUse('ReflectionClass');
         $namespace->addUse('ReflectionProperty');
         $className = str_replace("\\", "", $entityClass) . ucfirst($schemaName) . "Extractor";
@@ -60,7 +66,7 @@ class ExtractorGenerator
         $printer = new PsrPrinter();
 
         $result = new GeneratedClass();
-        $result->namespace = $ns;
+        $result->namespace = $this->namespace;
         $result->className = $className;
         $result->code = "<?php\n" . $printer->printNamespace($namespace);
 
