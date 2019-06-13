@@ -1,7 +1,7 @@
 <?php
-namespace Haskel\SchemaSerializer\Formatter;
+namespace Haskel\MapSerializer\Formatter;
 
-use Haskel\SchemaSerializer\Exception\FormatterException;
+use Haskel\MapSerializer\Exception\FormatterException;
 
 class ScalarFormatter implements Formatter
 {

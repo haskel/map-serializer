@@ -1,5 +1,5 @@
 <?php
-namespace Haskel\SchemaSerializer;
+namespace Haskel\MapSerializer;
 
 class Context
 {

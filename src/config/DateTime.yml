@@ -1,11 +1,11 @@
 default:
-  $formatter: 'Haskel\SchemaSerializer\Formatter\DatetimeFormatter'
+  $formatter: 'Haskel\MapSerializer\Formatter\DatetimeFormatter'
 
 datetime:
-  $formatter: 'Haskel\SchemaSerializer\Formatter\DatetimeFormatter'
+  $formatter: 'Haskel\MapSerializer\Formatter\DatetimeFormatter'
 
 date:
-  $formatter: 'Haskel\SchemaSerializer\Formatter\DatetimeFormatter'
+  $formatter: 'Haskel\MapSerializer\Formatter\DatetimeFormatter'
 
 time:
-  $formatter: 'Haskel\SchemaSerializer\Formatter\DatetimeFormatter'
+  $formatter: 'Haskel\MapSerializer\Formatter\DatetimeFormatter'

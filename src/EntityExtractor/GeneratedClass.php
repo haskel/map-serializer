@@ -1,6 +1,6 @@
 <?php
 
-namespace Haskel\SchemaSerializer\EntityExtractor;
+namespace Haskel\MapSerializer\EntityExtractor;
 
 class GeneratedClass
 {

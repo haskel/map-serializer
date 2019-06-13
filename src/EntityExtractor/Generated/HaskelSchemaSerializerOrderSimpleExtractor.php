@@ -1,10 +1,10 @@
 <?php
-namespace Haskel\SchemaSerializer\EntityExtractor\Generated;
+namespace Haskel\MapSerializer\EntityExtractor\Generated;
 
 use ReflectionClass;
 use ReflectionProperty;
 
-final class HaskelSchemaSerializerOrderSimpleExtractor extends \Haskel\SchemaSerializer\EntityExtractor\BaseExtractor
+final class HaskelSchemaSerializerOrderSimpleExtractor extends \Haskel\MapSerializer\EntityExtractor\BaseExtractor
 {
     protected function extract()
     {

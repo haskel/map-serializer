@@ -1,6 +1,6 @@
 <?php
 
-namespace Haskel\SchemaSerializer\Exception;
+namespace Haskel\MapSerializer\Exception;
 
 use Exception;
 

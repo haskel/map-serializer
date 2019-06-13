@@ -1,18 +1,21 @@
 <?php
-namespace Haskel\SchemaSerializer;
+namespace Haskel\MapSerializer;
 
-use Haskel\SchemaSerializer\EntityExtractor\Extractor;
-use Haskel\SchemaSerializer\EntityExtractor\FieldExtractor;
-use Haskel\SchemaSerializer\Exception\SerializerException;
-use Haskel\SchemaSerializer\Formatter\Formatter;
-use Haskel\SchemaSerializer\Formatter\ObjectFormatter;
-use Haskel\SchemaSerializer\Formatter\ScalarFormatter;
-use Haskel\SchemaSerializer\Schema\SpecialField;
+use Haskel\MapSerializer\EntityExtractor\Extractor;
+use Haskel\MapSerializer\EntityExtractor\FieldExtractor;
+use Haskel\MapSerializer\Exception\SerializerException;
+use Haskel\MapSerializer\Formatter\Formatter;
+use Haskel\MapSerializer\Formatter\ObjectFormatter;
+use Haskel\MapSerializer\Formatter\ScalarFormatter;
+use Haskel\MapSerializer\Schema\SpecialField;
 
 class Serializer
 {
     private $schemas = [];
 
+    /**
+     * @var Formatter[]
+     */
     private $formatters = [];
 
     private $extractors = [];
@@ -116,6 +119,11 @@ class Serializer
                 throw new SerializerException(sprintf("schema '%s' for '%s' is undefined", $name, $type));
             }
             return $schema;
+        }
+
+        // if scalar
+        if ($name === $this->defaultSchemaName) {
+            $name = gettype($name);
         }
 
         return $this->schemas['scalar'][$name];

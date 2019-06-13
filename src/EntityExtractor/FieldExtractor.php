@@ -1,9 +1,9 @@
 <?php
-namespace Haskel\SchemaSerializer\EntityExtractor;
+namespace Haskel\MapSerializer\EntityExtractor;
 
 use ArrayAccess;
-use Haskel\SchemaSerializer\Exception\PropertyNotFoundException;
-use Haskel\SchemaSerializer\Exception\SerializerException;
+use Haskel\MapSerializer\Exception\PropertyNotFoundException;
+use Haskel\MapSerializer\Exception\SerializerException;
 use ReflectionClass;
 
 class FieldExtractor implements Extractor

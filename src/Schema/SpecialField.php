@@ -1,5 +1,5 @@
 <?php
-namespace Haskel\SchemaSerializer\Schema;
+namespace Haskel\MapSerializer\Schema;
 
 class SpecialField
 {

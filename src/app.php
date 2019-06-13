@@ -1,9 +1,9 @@
 <?php
 
-use Haskel\SchemaSerializer\EntityExtractor\ExtractorGenerator;
-use Haskel\SchemaSerializer\Formatter\DatetimeFormatter;
-use Haskel\SchemaSerializer\Order;
-use Haskel\SchemaSerializer\Serializer;
+use Haskel\MapSerializer\EntityExtractor\ExtractorGenerator;
+use Haskel\MapSerializer\Formatter\DatetimeFormatter;
+use Haskel\MapSerializer\Order;
+use Haskel\MapSerializer\Serializer;
 use Symfony\Component\Yaml\Yaml;
 
 require_once __DIR__ . "/../vendor/autoload.php";

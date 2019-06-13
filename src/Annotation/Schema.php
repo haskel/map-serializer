@@ -1,5 +1,5 @@
 <?php
-namespace Haskel\SchemaSerializer\Annotation;
+namespace Haskel\MapSerializer\Annotation;
 
 /**
  * @Annotation

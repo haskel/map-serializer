@@ -1,6 +1,6 @@
 <?php
 
-namespace Haskel\SchemaSerializer\Formatter;
+namespace Haskel\MapSerializer\Formatter;
 
 interface Formatter
 {

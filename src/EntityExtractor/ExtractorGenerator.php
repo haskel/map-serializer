@@ -1,11 +1,11 @@
 <?php
 
-namespace Haskel\SchemaSerializer\EntityExtractor;
+namespace Haskel\MapSerializer\EntityExtractor;
 
-use Haskel\SchemaSerializer\Exception\ExtractorGeneratorException;
-use Haskel\SchemaSerializer\Exception\PropertyNotFoundException;
-use Haskel\SchemaSerializer\Exception\SerializerException;
-use Haskel\SchemaSerializer\Schema\SpecialField;
+use Haskel\MapSerializer\Exception\ExtractorGeneratorException;
+use Haskel\MapSerializer\Exception\PropertyNotFoundException;
+use Haskel\MapSerializer\Exception\SerializerException;
+use Haskel\MapSerializer\Schema\SpecialField;
 use Nette\PhpGenerator\ClassType;
 use Nette\PhpGenerator\PhpNamespace;
 use Nette\PhpGenerator\PsrPrinter;
@@ -56,6 +56,10 @@ class ExtractorGenerator
         $namespace->addUse('ReflectionProperty');
         $className = str_replace("\\", "", $entityClass) . ucfirst($schemaName) . "Extractor";
         $class = $namespace->addClass($className);
+
+        $class->addProperty('entity')
+              ->setVisibility('protected')
+              ->addComment("@var \\$entityClass");
 
         $class->setFinal()
               ->setExtends(BaseExtractor::class)

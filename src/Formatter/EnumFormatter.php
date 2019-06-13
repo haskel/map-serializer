@@ -1,7 +1,7 @@
 <?php
-namespace Haskel\SchemaSerializer\Formatter;
+namespace Haskel\MapSerializer\Formatter;
 
-use Haskel\SchemaSerializer\Exception\FormatterException;
+use Haskel\MapSerializer\Exception\FormatterException;
 use ReflectionClass;
 
 class EnumFormatter implements Formatter
