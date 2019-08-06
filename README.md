@@ -8,7 +8,7 @@ The library allows you to serialize some struct using mapping schemas.
 composer require haskel/map-serializer
 ```
 
-##Example
+## Example
 ```php
 $schema = [
     'id'     => 'int',
@@ -19,7 +19,7 @@ $schema = [
 $serializer->addSchema(User::class, 'default', $schema);
 $result = $serializer->serialize(new User('Alice'));
 ```
-```json
+```javascript
 {
   id: 1,
   name: 'Alice',
@@ -58,8 +58,8 @@ $users = [
     new User(2, 'Bob'),
 ];
 $result = $serializer->serialize($users, 'short');
-
-/**
+```
+```javascript
 [
   {
     id: 1,
@@ -70,7 +70,6 @@ $result = $serializer->serialize($users, 'short');
     name: 'Bob'
   }
 ]
-*/
 ```
 
 ### Nested objects
@@ -98,8 +97,8 @@ $user = new User('Alice');
 $user->addToGroup($group);
 
 $result = $serializer->serialize($user);
-
-/**
+```
+```javascript
 {
   id: 1,
   name: 'Alice',
@@ -108,7 +107,6 @@ $result = $serializer->serialize($user);
     name: 'sales'
   }
 }
-*/
 ```
 
 
@@ -158,10 +156,9 @@ $serializer->addFormatter(new DatetimeFormatter());
 
 $datetime = new DateTime('2015-10-21 12:00:00');
 $serializer->format($datetime, 'date');
-
-/**
+```
+```javascript
 '2015-10-21'
-*/
 ```
 
 
@@ -244,13 +241,12 @@ $schema = [
 $serializer->addSchema(User::class, 'default', $schema);
 $serializer->addExtractor(User::class, 'default', UserExtractor::class);
 $result = $serializer->serialize(new User('Alice'));
-
-/**
+```
+```javascript
 {
   id: 42,
   name: '42',
   status: 42,
   role: '42'
 }
-*/
 ```
