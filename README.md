@@ -18,15 +18,14 @@ $schema = [
 ];
 $serializer->addSchema(User::class, 'default', $schema);
 $result = $serializer->serialize(new User('Alice'));
-
-/**
+```
+```json
 {
   id: 1,
   name: 'Alice',
   status: 0,
   role: 'user'
 }
-*/
 ```
 
 ## Usage
