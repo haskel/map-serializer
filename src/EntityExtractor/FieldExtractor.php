@@ -5,6 +5,7 @@ use ArrayAccess;
 use Haskel\MapSerializer\Exception\PropertyNotFoundException;
 use Haskel\MapSerializer\Exception\SerializerException;
 use ReflectionClass;
+use ReflectionProperty;
 
 class FieldExtractor implements Extractor
 {
@@ -32,10 +33,33 @@ class FieldExtractor implements Extractor
     {
         $this->entity = $entity;
         if (is_object($entity)) {
-            $this->objectVars       = get_object_vars($entity);
+//            $this->objectVars       = get_object_vars($entity);
             $this->objectReflection = new ReflectionClass($entity);
+            $this->objectVars = $this->getObjectProperties(get_class($entity), $entity);
         }
     }
+    
+    private function getObjectProperties($class, $object)
+    {
+        $vars = [];
+        $reflection = new ReflectionClass($class);
+        $props = $reflection->getProperties(ReflectionProperty::IS_PUBLIC | ReflectionProperty::IS_PROTECTED | ReflectionProperty::IS_PRIVATE);
+        foreach ($props as $prop) {
+            $prop->setAccessible(true);
+            $vars[$prop->getName()] = $prop->getValue($object);
+        }
+
+        if ($parentClass = $reflection->getParentClass()) {
+            $parentVars = $this->getObjectProperties($parentClass->getName(), $object);
+            if (count($parentVars)) {
+                $vars = array_merge($parentVars, $vars);
+            }
+        }
+
+        return $vars;
+    }
+
+
 
     /**
      * @param mixed $fieldName
@@ -79,10 +103,11 @@ class FieldExtractor implements Extractor
         }
 
         if (is_object($this->entity)) {
-            if (!property_exists($this->entity, $fieldName)) {
-                $message = sprintf("property %s not found in class '%s'", $fieldName, get_class($this->entity));
-                throw new PropertyNotFoundException($message, $this->entity);
-            }
+            // непонятно зачем это проверять + нельзя так проверить родительсткие свойства у родителей
+//            if (!property_exists($this->entity, $fieldName)) {
+//                $message = sprintf("property %s not found in class '%s'", $fieldName, get_class($this->entity));
+//                throw new PropertyNotFoundException($message, $this->entity);
+//            }
 
             if (array_key_exists($fieldName, $this->objectVars)) {
                 return $this->objectVars[$fieldName];

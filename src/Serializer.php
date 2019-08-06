@@ -11,6 +11,9 @@ use Haskel\MapSerializer\Schema\SpecialField;
 
 class Serializer
 {
+    /**
+     * @var array 
+     */
     private $schemas = [];
 
     /**
@@ -18,14 +21,29 @@ class Serializer
      */
     private $formatters = [];
 
+    /**
+     * @var array
+     */
     private $extractors = [];
 
+    /**
+     * @var string
+     */
     private $defaultSchemaName = 'default';
 
+    /**
+     * @var bool
+     */
     private $showNullable = true;
 
+    /**
+     * @var bool
+     */
     private $ignoreUnknownFields = true;
 
+    /**
+     * @var string
+     */
     private $extractorsDir = '';
 
     public function __construct()
@@ -55,24 +73,38 @@ class Serializer
         $this->schemas[$className][$name] = $schema;
     }
 
+    /**
+     * @param Formatter $formatter
+     */
     public function addFormatter(Formatter $formatter)
     {
         $this->formatters[get_class($formatter)] = $formatter;
     }
 
+    /**
+     * @param $className
+     * @param $name
+     * @param $extractorClass
+     */
     public function addExtractor($className, $name, $extractorClass)
     {
         $this->extractors[$className][$name] = $extractorClass;
     }
 
+    /**
+     * @param $extractorsDir
+     */
     public function setExtractorsDir($extractorsDir)
     {
         $this->extractorsDir = $extractorsDir;
     }
 
-    public function setContext()
+    /**
+     * @param Context $context
+     */
+    public function setContext(Context $context)
     {
-
+        $this->context = $context;
     }
 
     /**
@@ -114,7 +146,17 @@ class Serializer
 
         if (is_object($entity)) {
             $type = get_class($entity);
-            $schema = $this->schemas[$type][$name] ?? $this->schemas['object'][$name] ?? null;
+            $schema = $this->schemas[$type][$name] ?? null;
+            if (!$schema) {
+                $parents = class_parents($entity);
+                foreach ($parents as $parent) {
+                    $schema = $this->schemas[$parent][$name] ?? null;
+                    if ($schema) {
+                        break;
+                    }
+                }
+            }
+            $schema = $schema ?? $this->schemas['object'][$name] ?? null;
             if (!$schema) {
                 throw new SerializerException(sprintf("schema '%s' for '%s' is undefined", $name, $type));
             }
@@ -146,6 +188,9 @@ class Serializer
         return new FieldExtractor($entity);
     }
 
+    /**
+     * @param $extractorClass
+     */
     private function loadExtractor($extractorClass)
     {
         $name = substr_replace($extractorClass, "", 0, strrpos($extractorClass, "\\") + 1);
