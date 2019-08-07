@@ -10,6 +10,28 @@ composer require haskel/map-serializer
 
 ## Example
 ```php
+class User 
+{
+    private $id;
+    private $name;
+    private status = 0;
+    private $role;
+    private $phone;
+    private $mail;
+    private group;
+    
+    public function __construct($id, $name, $role)
+    {
+        $this->id = $id;
+        $this->name = $name;
+        $this->role = $role;
+    }
+    
+    /**
+     * ... Boring code with getters and setters ...
+     */
+}
+
 $schema = [
     'id'     => 'int',
     'name'   => 'string',
@@ -17,7 +39,7 @@ $schema = [
     'role'   => 'string',
 ];
 $serializer->addSchema(User::class, 'default', $schema);
-$result = $serializer->serialize(new User('Alice'));
+$result = $serializer->serialize(new User('Alice', 'user'));
 ```
 ```javascript
 {
