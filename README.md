@@ -1,5 +1,7 @@
 Map Serializer
 ==================
+[![Latest Stable Version](https://poser.pugx.org/haskel/map-serializer/v/stable)](https://packagist.org/packages/haskel/map-serializer)
+[![License](https://img.shields.io/badge/license-New%20BSD-blue.svg)](https://github.com/haskel/map-serializer/blob/master/license.md)
 
 The library allows you to serialize some struct using mapping schemas.
 
