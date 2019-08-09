@@ -12,6 +12,7 @@ composer require haskel/map-serializer
 
 ## Example
 ```php
+/** Define a class that you want to serialize */
 class User 
 {
     private $id;
@@ -34,13 +35,17 @@ class User
      */
 }
 
+/** Specify the schema */
 $schema = [
     'id'     => 'int',
     'name'   => 'string',
     'status' => 'int',
     'role'   => 'string',
 ];
+/** Add this schema definition, uniq schema name and class name to serializer */
 $serializer->addSchema(User::class, 'default', $schema);
+
+/** serialize an instance of the class */
 $result = $serializer->serialize(new User('Alice', 'user'));
 ```
 ```javascript
