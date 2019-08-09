@@ -45,7 +45,7 @@ $schema = [
 /** Add this schema definition, uniq schema name and class name to serializer */
 $serializer->addSchema(User::class, 'default', $schema);
 
-/** serialize an instance some the class */
+/** serialize some instance of the class */
 $result = $serializer->serialize(new User('Alice', 'user'));
 ```
 ```javascript
