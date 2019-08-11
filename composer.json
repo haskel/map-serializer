@@ -2,7 +2,7 @@
     "name": "haskel/map-serializer",
     "type": "library",
     "description": "Object Serializer by map",
-    "keywords": ['serializer'],
+    "keywords": ["serializer"],
     "license": "MIT",
     "require": {
         "symfony/yaml": "~4.0",

@@ -1,5 +1,7 @@
 Map Serializer
 ==================
+[![Latest Stable Version](https://poser.pugx.org/haskel/map-serializer/v/stable)](https://packagist.org/packages/haskel/map-serializer)
+[![License](https://img.shields.io/badge/license-New%20BSD-blue.svg)](https://github.com/haskel/map-serializer/blob/master/license.md)
 
 The library allows you to serialize some struct using mapping schemas.
 
@@ -8,25 +10,51 @@ The library allows you to serialize some struct using mapping schemas.
 composer require haskel/map-serializer
 ```
 
-##Example
+## Example
 ```php
+/** Define a class that you want to serialize */
+class User 
+{
+    private $id;
+    private $name;
+    private status = 0;
+    private $role;
+    private $phone;
+    private $mail;
+    private group;
+    
+    public function __construct($id, $name, $role)
+    {
+        $this->id = $id;
+        $this->name = $name;
+        $this->role = $role;
+    }
+    
+    /**
+     * ... Boring code with getters and setters ...
+     */
+}
+
+/** Specify the schema */
 $schema = [
     'id'     => 'int',
     'name'   => 'string',
     'status' => 'int',
     'role'   => 'string',
 ];
+/** Add this schema definition, uniq schema name and class name to serializer */
 $serializer->addSchema(User::class, 'default', $schema);
-$result = $serializer->serialize(new User('Alice'));
 
-/**
+/** serialize some instance of the class */
+$result = $serializer->serialize(new User('Alice', 'user'));
+```
+```javascript
 {
   id: 1,
   name: 'Alice',
   status: 0,
   role: 'user'
 }
-*/
 ```
 
 ## Usage
@@ -59,8 +87,8 @@ $users = [
     new User(2, 'Bob'),
 ];
 $result = $serializer->serialize($users, 'short');
-
-/**
+```
+```javascript
 [
   {
     id: 1,
@@ -71,7 +99,6 @@ $result = $serializer->serialize($users, 'short');
     name: 'Bob'
   }
 ]
-*/
 ```
 
 ### Nested objects
@@ -99,8 +126,8 @@ $user = new User('Alice');
 $user->addToGroup($group);
 
 $result = $serializer->serialize($user);
-
-/**
+```
+```javascript
 {
   id: 1,
   name: 'Alice',
@@ -109,7 +136,6 @@ $result = $serializer->serialize($user);
     name: 'sales'
   }
 }
-*/
 ```
 
 
@@ -159,10 +185,9 @@ $serializer->addFormatter(new DatetimeFormatter());
 
 $datetime = new DateTime('2015-10-21 12:00:00');
 $serializer->format($datetime, 'date');
-
-/**
+```
+```javascript
 '2015-10-21'
-*/
 ```
 
 
@@ -245,13 +270,12 @@ $schema = [
 $serializer->addSchema(User::class, 'default', $schema);
 $serializer->addExtractor(User::class, 'default', UserExtractor::class);
 $result = $serializer->serialize(new User('Alice'));
-
-/**
+```
+```javascript
 {
   id: 42,
   name: '42',
   status: 42,
   role: '42'
 }
-*/
 ```
