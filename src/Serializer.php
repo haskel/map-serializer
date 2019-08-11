@@ -7,6 +7,7 @@ use Haskel\MapSerializer\Exception\SerializerException;
 use Haskel\MapSerializer\Formatter\Formatter;
 use Haskel\MapSerializer\Formatter\ObjectFormatter;
 use Haskel\MapSerializer\Formatter\ScalarFormatter;
+use Haskel\MapSerializer\Schema\SchemaName;
 use Haskel\MapSerializer\Schema\SpecialField;
 
 class Serializer
@@ -29,7 +30,7 @@ class Serializer
     /**
      * @var string
      */
-    private $defaultSchemaName = 'default';
+    private $defaultSchemaName = SchemaName::DEFAULT;
 
     /**
      * @var bool
@@ -44,7 +45,7 @@ class Serializer
     /**
      * @var string
      */
-    private $extractorsDir = '';
+    private $extractorsDir = '/tmp';
 
     public function __construct()
     {
@@ -54,13 +55,16 @@ class Serializer
     private function initDefault()
     {
         $this->addFormatter(new ScalarFormatter());
-        $scalarTypes = ['int', 'float', 'string', 'boolean'];
-        foreach ($scalarTypes as $scalarType) {
-            $this->addSchema('scalar', $scalarType, [SpecialField::FORMATTER => ScalarFormatter::class]);
+        foreach (Type::$scalar as $scalarType) {
+            $this->addSchema(Type::SCALAR,
+                             $scalarType,
+                             [SpecialField::FORMATTER => ScalarFormatter::class]);
         }
 
         $this->addFormatter(new ObjectFormatter());
-        $this->addSchema('object', $this->defaultSchemaName, [SpecialField::FORMATTER => ObjectFormatter::class]);
+        $this->addSchema(Type::OBJECT,
+                         $this->defaultSchemaName,
+                         [SpecialField::FORMATTER => ObjectFormatter::class]);
     }
 
     /**
@@ -114,7 +118,7 @@ class Serializer
      *
      * @return array|string|null
      */
-    public function serialize($entity, $schemaName = 'default', Context $context = null)
+    public function serialize($entity, $schemaName = SchemaName::DEFAULT, Context $context = null)
     {
         if (is_iterable($entity)) {
             $result = [];
@@ -156,7 +160,7 @@ class Serializer
                     }
                 }
             }
-            $schema = $schema ?? $this->schemas['object'][$name] ?? null;
+            $schema = $schema ?? $this->schemas[Type::OBJECT][$name] ?? null;
             if (!$schema) {
                 throw new SerializerException(sprintf("schema '%s' for '%s' is undefined", $name, $type));
             }
@@ -168,7 +172,7 @@ class Serializer
             $name = gettype($name);
         }
 
-        return $this->schemas['scalar'][$name];
+        return $this->schemas[Type::SCALAR][$name];
     }
 
     /**
@@ -194,7 +198,7 @@ class Serializer
     private function loadExtractor($extractorClass)
     {
         $name = substr_replace($extractorClass, "", 0, strrpos($extractorClass, "\\") + 1);
-        $file = $this->extractorsDir . "/" . $name . ".php";
+        $file = $this->extractorsDir . DIRECTORY_SEPARATOR . $name . ".php";
         if (file_exists($file)) {
             @include_once $file;
         }

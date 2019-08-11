@@ -8,12 +8,14 @@ class GeneratedClass
     public $namespace;
     public $code;
 
+    private const FILE_PERMS = 0755;
+
     public function saveFile($directory)
     {
         if (!is_dir($directory)) {
-            mkdir($directory, 0755, true);
+            mkdir($directory, self::FILE_PERMS, true);
         }
-        $filename = $directory . "/" . $this->className . ".php";
+        $filename = $directory . DIRECTORY_SEPARATOR . $this->className . ".php";
         file_put_contents($filename, $this->code);
     }
 
