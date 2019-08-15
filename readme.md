@@ -1,5 +1,4 @@
-
-The library allows you to serialize some struct using mapping schemas.
+Use different tiny and simple schemas to serialize your objects and other structs
 
 <br><br>
 [![Latest Stable Version](https://poser.pugx.org/haskel/map-serializer/v/stable)](https://packagist.org/packages/haskel/map-serializer)
