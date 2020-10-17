@@ -5,7 +5,7 @@
     "keywords": ["serializer"],
     "license": "MIT",
     "require": {
-        "symfony/yaml": "~4.0",
+        "symfony/yaml": "~4.0|~5.0",
         "nette/php-generator": "^3.2"
     },
     "autoload": {
